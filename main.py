@@ -1,6 +1,7 @@
 import turtle as t
 from paddle import Paddle
 from ball import Ball
+from scoreboard import Scoreboard
 import time
 
 screen = t.Screen()
@@ -11,6 +12,7 @@ screen.tracer(0)
 screen.listen()
 
 ball = Ball()
+scoreboard = Scoreboard()
 
 paddle_1 = Paddle((470,0))
 screen.onkey(paddle_1.up, 'Up')
@@ -38,15 +40,17 @@ while True:
     ):
         ball.bounce_x()
 
-    # Ball go beyond the paddles_1
+    # Ball go beyond the right paddle
 
     if ball.xcor() > 500:
         ball.reset_position()
+        scoreboard.l_point()
 
-    # Ball go beyond the paddle_2
+    # Ball go beyond the left paddle
 
     if ball.xcor() < -500:
         ball.reset_position()
+        scoreboard.r_point()
 
 
 
