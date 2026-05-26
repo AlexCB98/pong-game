@@ -30,7 +30,7 @@ while True:
     if ball.ycor() > 380 or ball.ycor() < -380:
         ball.bounce_y()
 
-    # Detect collision with paddles
+    # Collision with paddles
 
     if (
         ball.distance(paddle_1) < 50 and ball.xcor() > 440
@@ -38,7 +38,15 @@ while True:
     ):
         ball.bounce_x()
 
+    # Ball go beyond the paddles_1
 
+    if ball.xcor() > 500:
+        ball.reset_position()
+
+    # Ball go beyond the paddle_2
+
+    if ball.xcor() < -500:
+        ball.reset_position()
 
 
 
