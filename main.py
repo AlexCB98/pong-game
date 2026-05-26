@@ -2,6 +2,7 @@ import turtle as t
 from paddle import Paddle
 from ball import Ball
 from scoreboard import Scoreboard
+from field import Field
 import time
 
 screen = t.Screen()
@@ -13,19 +14,76 @@ screen.listen()
 
 ball = Ball()
 scoreboard = Scoreboard()
+field = Field()
+
+paddle_1_up = False
+paddle_1_down = False
+paddle_2_up = False
+paddle_2_down = False
 
 paddle_1 = Paddle((470,0))
-screen.onkey(paddle_1.up, 'Up')
-screen.onkey(paddle_1.down, 'Down')
 
 paddle_2 = Paddle((-470,0))
-screen.onkey(paddle_2.up, 'w')
-screen.onkey(paddle_2.down, 's')
+
+def paddle_1_go_up():
+    global paddle_1_up
+    paddle_1_up = True
+
+def paddle_1_stop_up():
+    global paddle_1_up
+    paddle_1_up = False
+
+def paddle_1_go_down():
+    global paddle_1_down
+    paddle_1_down = True
+
+def paddle_1_stop_down():
+    global paddle_1_down
+    paddle_1_down = False
+
+def paddle_2_go_up():
+    global paddle_2_up
+    paddle_2_up = True
+
+def paddle_2_stop_up():
+    global paddle_2_up
+    paddle_2_up = False
+
+def paddle_2_go_down():
+    global paddle_2_down
+    paddle_2_down = True
+
+def paddle_2_stop_down():
+    global paddle_2_down
+    paddle_2_down = False
+
+screen.onkeypress(paddle_1_go_up, 'Up')
+screen.onkeyrelease(paddle_1_stop_up, 'Up')
+screen.onkeypress(paddle_1_go_down, 'Down')
+screen.onkeyrelease(paddle_1_stop_down, 'Down')
+
+screen.onkeypress(paddle_2_go_up, 'w')
+screen.onkeyrelease(paddle_2_stop_up, 'w')
+screen.onkeypress(paddle_2_go_down, 's')
+screen.onkeyrelease(paddle_2_stop_down, 's')
 
 while True:
-    time.sleep(0.1)
-    screen.update()
+    time.sleep(ball.increase_speed)
     ball.move()
+
+    if paddle_1_up:
+        paddle_1.up()
+
+    if paddle_1_down:
+        paddle_1.down()
+
+    if paddle_2_up:
+        paddle_2.up()
+
+    if paddle_2_down:
+        paddle_2.down()
+
+    screen.update()
 
     # Collision with wall
 
@@ -34,10 +92,12 @@ while True:
 
     # Collision with paddles
 
-    if (
-        ball.distance(paddle_1) < 50 and ball.xcor() > 440
-        or ball.distance(paddle_2) < 50 and ball.xcor() < -440
-    ):
+    if ball.xcor() > 440 and ball.x_move > 0 and ball.ycor() < paddle_1.ycor() + 60 and ball.ycor() > paddle_1.ycor() - 60:
+        ball.setx(440)
+        ball.bounce_x()
+
+    if ball.xcor() < -440 and ball.x_move < 0 and ball.ycor() < paddle_2.ycor() + 60 and ball.ycor() > paddle_2.ycor() - 60:
+        ball.setx(-440)
         ball.bounce_x()
 
     # Ball go beyond the right paddle

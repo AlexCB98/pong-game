@@ -1,8 +1,5 @@
 import turtle as t
 
-STRETCH_WID = 1
-STRETCH_LEN = 1
-MOVE = 10
 
 class Ball(t.Turtle):
 
@@ -10,10 +7,10 @@ class Ball(t.Turtle):
         super().__init__()
         self.shape('circle')
         self.color('white')
-        self.shapesize(STRETCH_WID, STRETCH_LEN)
         self.penup()
-        self.x_move = MOVE
-        self.y_move = MOVE
+        self.x_move = 6
+        self.y_move = 6
+        self.increase_speed = 0.03
 
     def move(self):
         new_x = self.xcor() + self.x_move
@@ -25,7 +22,9 @@ class Ball(t.Turtle):
 
     def bounce_x(self):
         self.x_move *= -1
+        self.increase_speed *= 0.9
 
     def reset_position(self):
         self.goto(0,0)
+        self.increase_speed = 0.03
         self.bounce_x()

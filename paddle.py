@@ -5,6 +5,8 @@ STRETCH_WID = 5
 STRETCH_LEN = 1
 
 MOVE = 20
+MAX_Y = 330
+MIN_Y = -330
 
 class Paddle(t.Turtle):
 
@@ -18,13 +20,12 @@ class Paddle(t.Turtle):
         self.goto(position)
 
     def up(self):
-        new_y = self.ycor() + 20
-        self.goto(self.xcor(), new_y)
-        self.screen.update()
+        if self.ycor() < MAX_Y:
+            new_y = self.ycor() + MOVE
+            self.goto(self.xcor(), new_y)
 
 
     def down(self):
-        new_y = self.ycor() - 20
-        self.goto(self.xcor(), new_y)
-        self.screen.update()
-
+        if self.ycor() > MIN_Y:
+            new_y = self.ycor() - MOVE
+            self.goto(self.xcor(), new_y)
